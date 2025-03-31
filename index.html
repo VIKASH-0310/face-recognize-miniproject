@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Face Detection System</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; }
+        .container { margin-top: 50px; }
+        button { padding: 10px 20px; margin: 10px; font-size: 16px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Face Detection System</h1>
+        <label for="name">Enter Name:</label>
+        <input type="text" id="name" placeholder="Person's Name">
+        <br>
+        <button onclick="captureImages()">Capture Images</button>
+
+        <button onclick="startRecognition()">Start Recognition</button>
+    </div>
+
+    <script>
+        function captureImages() {
+            const name = document.getElementById('name').value.trim();
+            if (!name) {
+                alert("Please enter a name!");
+                return;
+            }
+            fetch('http://127.0.0.1:5000/capture', { 
+                method: 'POST', 
+                body: JSON.stringify({ name }), 
+                headers: { 'Content-Type': 'application/json' }
+            })
+            .then(response => response.json())
+            .then(data => alert(data.message))
+            .catch(error => alert("Error: " + error));
+        }
+    
+
+    
+        function startRecognition() {
+            fetch('http://127.0.0.1:5000/recognize', { method: 'POST' })
+            .then(response => response.json())
+            .then(data => alert(data.message))
+            .catch(error => alert("Error: " + error));
+        }
+    </script>
+    
+    
+</body>
+</html>
